@@ -4,6 +4,7 @@ import multerConfig from './config/multer';
 
 import UserController from './app/controllers/UserController';
 import DeliverymanController from './app/controllers/DeliverymanController';
+import RecipientController from './app/controllers/RecipientController';
 import OrderController from './app/controllers/OrderController';
 import AvatarController from './app/controllers/AvatarController';
 
@@ -29,6 +30,7 @@ routes.put(
 );
 
 // Problemas nas Entregas
+routes.get('/delivery/problems', DeliveryProblemController.index);
 routes.get('/delivery/:id/problems', DeliveryProblemController.get);
 routes.post('/delivery/:id/problems', DeliveryProblemController.store);
 routes.delete('/problem/:id/cancel-delivery', DeliveryProblemController.cancel);
@@ -46,8 +48,16 @@ routes.put('/deliveryman/:id', DeliverymanController.update);
 routes.delete('/deliveryman/:id', DeliverymanController.delete);
 routes.post('/avatar', upload.single('file'), AvatarController.store);
 
+// Recipients routes
+routes.get('/recipients', RecipientController.index);
+routes.get('/recipients/:id', RecipientController.get);
+routes.post('/recipients', RecipientController.store);
+routes.put('/recipients/:id', RecipientController.update);
+routes.delete('/recipients/:id', RecipientController.delete);
+
 // Deliveries Admin
 routes.get('/delivery', DeliveryController.index);
+routes.get('/delivery/:id', DeliveryController.get);
 routes.post('/delivery', DeliveryController.store);
 routes.put('/delivery/:id', DeliveryController.update);
 routes.delete('/delivery/:id', DeliveryController.delete);

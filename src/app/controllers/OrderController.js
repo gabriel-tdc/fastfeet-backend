@@ -27,7 +27,7 @@ class OrderController {
         path,
       });
 
-      console.log(signature);
+      // console.log(signature);
       // Salvar a signature ID
     }
 

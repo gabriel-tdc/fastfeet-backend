@@ -9,6 +9,24 @@ import CancelationEmail from '../jobs/CancelationEmail';
 import Queue from '../../lib/Queue';
 
 class DeliveryProblemController {
+  async index(req, res) {
+    const deliveryProblems = await DeliveryProblem.findAll({
+      include: [
+        {
+          model: Delivery,
+          as: 'delivery',
+          attributes: ['canceled_at'],
+          where: [
+            {
+              canceled_at: null,
+            },
+          ],
+        },
+      ],
+    });
+    return res.json(deliveryProblems);
+  }
+
   async get(req, res) {
     const deliveryProblems = await DeliveryProblem.findAll({
       where: {
@@ -54,7 +72,7 @@ class DeliveryProblemController {
     const { product } = delivery;
 
     if (delivery.canceled_at) {
-      // return res.status(400).json({ error: 'Entrega já cancelada.' });
+      return res.status(400).json({ error: 'Entrega já cancelada.' });
     }
 
     const now = new Date();

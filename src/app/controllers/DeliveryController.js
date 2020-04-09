@@ -1,7 +1,11 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 
 import Delivery from '../models/Delivery';
+import Recipient from '../models/Recipient';
+import Signature from '../models/Signature';
 import Deliveryman from '../models/Deliveryman';
+import Avatar from '../models/Avatar';
 import Notification from '../schema/Notification';
 
 import NotificationEmail from '../jobs/NotificationEmail';
@@ -9,11 +13,119 @@ import Queue from '../../lib/Queue';
 
 class DeliveryController {
   async index(req, res) {
+    const search = req.query.q;
+    const where = search && {
+      [Op.or]: [
+        {
+          product: {
+            [Op.like]: `%${search}%`,
+          },
+        },
+      ],
+    };
+
     const deliveries = await Delivery.findAll({
-      // attributes: ['id', 'name', 'email', 'avatar_id']
+      attributes: [
+        'id',
+        'recipient_id',
+        'deliveryman_id',
+        'product',
+        'canceled_at',
+        'start_date',
+        'end_date',
+      ],
+
+      include: [
+        {
+          model: Recipient,
+          as: 'recipients',
+          attributes: [
+            'id',
+            'name',
+            'street',
+            'number',
+            'complement',
+            'state',
+            'city',
+            'cep',
+          ],
+        },
+        {
+          model: Signature,
+          as: 'signatures',
+          attributes: ['id', 'name', 'path'],
+        },
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['id', 'name', 'email', 'avatar_id'],
+          include: [
+            {
+              model: Avatar,
+              as: 'avatar',
+              attributes: ['name', 'path', 'url'],
+            },
+          ],
+        },
+      ],
+      order: [['id', 'DESC']],
+
+      where,
     });
 
     return res.json(deliveries);
+  }
+
+  async get(req, res) {
+    const delivery = await Delivery.findOne({
+      attributes: [
+        'id',
+        'recipient_id',
+        'deliveryman_id',
+        'product',
+        'canceled_at',
+        'start_date',
+        'end_date',
+      ],
+      order: [['id', 'DESC']],
+      include: [
+        {
+          model: Recipient,
+          as: 'recipients',
+          attributes: [
+            'id',
+            'name',
+            'street',
+            'number',
+            'complement',
+            'state',
+            'city',
+            'cep',
+          ],
+        },
+        {
+          model: Signature,
+          as: 'signatures',
+          attributes: ['id', 'name', 'path'],
+        },
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['id', 'name', 'email', 'avatar_id'],
+          include: [
+            {
+              model: Avatar,
+              as: 'avatar',
+              attributes: ['name', 'path', 'url'],
+            },
+          ],
+        },
+      ],
+      where: {
+        id: req.params.id,
+      },
+    });
+    return res.json(delivery);
   }
 
   async store(req, res) {
@@ -61,6 +173,8 @@ class DeliveryController {
       deliveryman_id: Yup.string().required(),
       product: Yup.string().required(),
     });
+    console.log('ajustar o update para aceitar enviar só alguns campos');
+    console.log('Verificar se está alterando corretamente');
 
     if (!(await schema.isValid(req.body))) {
       return res

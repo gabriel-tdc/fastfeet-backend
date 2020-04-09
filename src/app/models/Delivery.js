@@ -20,6 +20,23 @@ class Delivery extends Model {
     return this;
   }
 
+  static associate(models) {
+    this.belongsTo(models.Deliveryman, {
+      foreignKey: 'deliveryman_id',
+      as: 'deliveryman',
+    });
+
+    this.belongsTo(models.Recipient, {
+      foreignKey: 'recipient_id',
+      as: 'recipients',
+    });
+
+    this.belongsTo(models.Signature, {
+      foreignKey: 'signature_id',
+      as: 'signatures',
+    });
+  }
+
   // static associate(models) {
   //   this.belongsTo(models.Signature, {
   //     foreignKey: 'signature_id',

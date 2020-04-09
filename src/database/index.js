@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 import User from '../app/models/User';
 import Deliveryman from '../app/models/Deliveryman';
+import Recipient from '../app/models/Recipient';
 import Avatar from '../app/models/Avatar';
 import Signature from '../app/models/Signature';
 
@@ -14,6 +15,7 @@ import databaseConfig from '../config/database';
 const models = [
   User,
   Deliveryman,
+  Recipient,
   Avatar,
   Signature,
   Delivery,
