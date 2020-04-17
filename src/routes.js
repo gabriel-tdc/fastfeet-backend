@@ -35,6 +35,9 @@ routes.get('/delivery/:id/problems', DeliveryProblemController.get);
 routes.post('/delivery/:id/problems', DeliveryProblemController.store);
 routes.delete('/problem/:id/cancel-delivery', DeliveryProblemController.cancel);
 
+routes.get('/deliveryman/:id', DeliverymanController.get);
+routes.get('/delivery/:id', DeliveryController.get);
+
 // Usuários devem estar autenticados
 routes.use(authMiddleware);
 
@@ -42,7 +45,6 @@ routes.put('/users', UserController.update);
 
 // Deliveryman routes
 routes.get('/deliveryman', DeliverymanController.index);
-routes.get('/deliveryman/:id', DeliverymanController.get);
 routes.post('/deliveryman', DeliverymanController.store);
 routes.put('/deliveryman/:id', DeliverymanController.update);
 routes.delete('/deliveryman/:id', DeliverymanController.delete);
@@ -57,7 +59,6 @@ routes.delete('/recipients/:id', RecipientController.delete);
 
 // Deliveries Admin
 routes.get('/delivery', DeliveryController.index);
-routes.get('/delivery/:id', DeliveryController.get);
 routes.post('/delivery', DeliveryController.store);
 routes.put('/delivery/:id', DeliveryController.update);
 routes.delete('/delivery/:id', DeliveryController.delete);

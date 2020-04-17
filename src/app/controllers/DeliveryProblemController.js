@@ -16,6 +16,7 @@ class DeliveryProblemController {
           model: Delivery,
           as: 'delivery',
           attributes: ['canceled_at'],
+          order: [['id', 'DESC']],
           where: [
             {
               canceled_at: null,
@@ -29,6 +30,7 @@ class DeliveryProblemController {
 
   async get(req, res) {
     const deliveryProblems = await DeliveryProblem.findAll({
+      order: [['id', 'DESC']],
       where: {
         delivery_id: req.params.id,
       },

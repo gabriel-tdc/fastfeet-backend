@@ -34,7 +34,7 @@ class DeliverymanController {
 
   async get(req, res) {
     const deliveryMan = await Deliveryman.findOne({
-      attributes: ['id', 'name', 'email', 'avatar_id'],
+      attributes: ['id', 'name', 'email', 'avatar_id', 'created_at'],
       order: [['id', 'DESC']],
       include: [
         {

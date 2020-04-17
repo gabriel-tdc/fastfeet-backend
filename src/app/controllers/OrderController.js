@@ -2,16 +2,46 @@ import { Op } from 'sequelize';
 import { startOfDay, endOfDay, parseISO } from 'date-fns';
 
 import Delivery from '../models/Delivery';
+import Recipient from '../models/Recipient';
 import Signature from '../models/Signature';
 
 class OrderController {
   async index(req, res) {
+    const { delivered } = req.query;
+
+    const where =
+      delivered === 'true'
+        ? {
+            deliveryman_id: req.params.id,
+            canceled_at: null,
+            end_date: {
+              [Op.ne]: null,
+            },
+          }
+        : {
+            deliveryman_id: req.params.id,
+            canceled_at: null,
+            end_date: null,
+          };
+
     const delivery = await Delivery.findAll({
-      where: {
-        deliveryman_id: req.params.id,
-        canceled_at: null,
-        // end_date: null,
-      },
+      include: [
+        {
+          model: Recipient,
+          as: 'recipients',
+          attributes: [
+            'id',
+            'name',
+            'street',
+            'number',
+            'complement',
+            'state',
+            'city',
+            'cep',
+          ],
+        },
+      ],
+      where,
     });
     return res.json(delivery);
   }
