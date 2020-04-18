@@ -25,6 +25,5 @@ Utilize a migration para carregar todas as tabelas e usuário de teste:
 Para executar a aplicação, utilizar o comando:  
 `yarn dev` e  
 `yarn queue`  
-
   
-  
+Todos os requests podem ser importados para o **Insominia**, utilizando o arquivo `Insomnia.json`
