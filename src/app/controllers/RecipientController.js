@@ -95,7 +95,7 @@ class RecipientDelivery {
     const recipient = await Recipients.findByPk(req.params.id);
 
     if (!recipient) {
-      return res.status(400).json({ message: 'Usuário não encontrado' });
+      return res.status(400).json({ message: 'Destinatário não encontrado' });
     }
 
     const {
@@ -131,8 +131,8 @@ class RecipientDelivery {
     });
 
     const message = recipient
-      ? 'Entregador apagado com sucesso.'
-      : 'Entregador não localizado.';
+      ? 'Destinatário apagado com sucesso.'
+      : 'Destinatário não localizado.';
     return res.json({ message });
   }
 }
