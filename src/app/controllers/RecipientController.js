@@ -84,10 +84,7 @@ class RecipientDelivery {
       name: Yup.string()
         .required()
         .min(6),
-      // email: Yup.string().required().email().min(6),
     });
-
-    console.log('testar os campos obrigatorios');
 
     if (!(await schema.isValid(req.body))) {
       return res

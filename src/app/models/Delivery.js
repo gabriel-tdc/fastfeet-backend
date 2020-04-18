@@ -36,16 +36,6 @@ class Delivery extends Model {
       as: 'signatures',
     });
   }
-
-  // static associate(models) {
-  //   this.belongsTo(models.Signature, {
-  //     foreignKey: 'signature_id',
-  //     as: 'signature',
-  //   });
-  // }
-  // static associate(models) {
-  //   this.belongsTo(models.Avatar, { foreignKey: 'avatar_id', as: 'avatar' });
-  // }
 }
 
 export default Delivery;

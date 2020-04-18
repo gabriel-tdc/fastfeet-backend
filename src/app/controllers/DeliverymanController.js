@@ -89,7 +89,6 @@ class DeliverymanController {
       name: Yup.string()
         .required()
         .min(6),
-      // email: Yup.string().required().email().min(6),
     });
 
     if (!(await schema.isValid(req.body))) {

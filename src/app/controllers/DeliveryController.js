@@ -173,8 +173,6 @@ class DeliveryController {
       deliveryman_id: Yup.string().required(),
       product: Yup.string().required(),
     });
-    console.log('ajustar o update para aceitar enviar só alguns campos');
-    console.log('Verificar se está alterando corretamente');
 
     if (!(await schema.isValid(req.body))) {
       return res
