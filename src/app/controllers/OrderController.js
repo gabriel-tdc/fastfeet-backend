@@ -48,17 +48,17 @@ class OrderController {
 
   async update(req, res) {
     const delivery = await Delivery.findByPk(req.params.id);
+    let signature_id = null;
 
     if (req.file) {
       const { originalname: name, filename: path } = req.file;
 
-      const signature = await Signature.create({
+      const { id } = await Signature.create({
         name,
         path,
       });
 
-      // console.log(signature);
-      // Salvar a signature ID
+      signature_id = id;
     }
 
     if (!delivery) {
@@ -73,6 +73,7 @@ class OrderController {
         start_date: {
           [Op.between]: [startOfDay(day), endOfDay(day)],
         },
+        deliveryman_id: delivery.deliveryman_id,
       },
     });
 
@@ -82,15 +83,15 @@ class OrderController {
         .json({ error: 'Número máximo de entregas do dia excedido.' });
     }
 
-    const { canceled_at, start_date, end_date } = await delivery.update(
-      req.body
-    );
+    const { start_date, end_date } = req.body;
 
-    return res.json({
-      canceled_at,
+    const updatedDelivery = await delivery.update({
       start_date,
       end_date,
+      signature_id,
     });
+
+    return res.json(updatedDelivery);
   }
 }
 

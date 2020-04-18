@@ -54,8 +54,6 @@ class DeliveryProblemController {
       description: req.body.description,
     };
 
-    console.log(data);
-
     const deliveryProblem = await DeliveryProblem.create(data);
 
     return res.json({ deliveryProblem });
